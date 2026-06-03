@@ -1,3 +1,5 @@
+#include "naive_gemm_cuda.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <chrono>
