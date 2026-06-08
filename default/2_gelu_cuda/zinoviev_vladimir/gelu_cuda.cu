@@ -60,3 +60,8 @@ private:
     size_t memSizeLast;
     float inputLast;
 };
+
+std::vector<float> GeluCUDA(const std::vector<float>& input) {
+    static GeluCUDAHandler handler;
+    return handler.execute(input);
+}
