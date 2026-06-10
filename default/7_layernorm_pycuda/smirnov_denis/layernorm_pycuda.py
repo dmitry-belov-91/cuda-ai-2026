@@ -1,7 +1,7 @@
 import cupy as cp
 import numpy as np
 
-
+// comment
 layernorm_kernel = cp.RawKernel(r'''
 __device__ __forceinline__ float warpReduceSum(float val) {
     for (int mask = 16; mask > 0; mask /= 2) {
