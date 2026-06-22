@@ -2,70 +2,43 @@
 
 #include <cuda_runtime.h>
 #include <cublas_v2.h>
-#include <cstring>
+#include <cuda/cmath>
 
 std::vector<float> GemmCUBLAS(const std::vector<float>& a,
                               const std::vector<float>& b,
                               int n)
 {
     // Place your implementation here
-    const int dataSize = n * n * sizeof(float); 
-    cublasHandle_t handle;
-    cudaStream_t   stream;
-    cublasCreate(&handle);
-    cudaStreamCreate(&stream);
-    cublasSetStream(handle, stream);
+    size_t size = n * n;
+    size_t dataSize = size * sizeof(float);
+    std::vector<float> c(size);
 
-    float *d_A;
-    cudaMalloc(&d_A, dataSize);
-    float *d_B;
-    cudaMalloc(&d_B, dataSize);
-    float *d_C;
-    cudaMalloc(&d_C, dataSize);
+    float *deviceA = nullptr;
+    cudaMalloc(&deviceA, dataSize);
+    float *deviceB = nullptr;
+    cudaMalloc(&deviceB, dataSize);
+    float *deviceC = nullptr;
+    cudaMalloc(&deviceC, dataSize);
+    
+    cublasHandle_t cublasHandle;
+    cublasCreate(&cublasHandle);
 
-    float *h_A;
-    cudaHostAlloc(&h_A, dataSize, cudaHostAllocDefault);
-    float *h_B;
-    cudaHostAlloc(&h_B, dataSize, cudaHostAllocDefault);
-    float *h_C;
-    cudaHostAlloc(&h_C, dataSize, cudaHostAllocDefault);
+    constexpr float alpha = 1.0f;
+    constexpr float beta = 0.0f;
 
-    std::memcpy(h_A, a.data(), dataSize);
-    std::memcpy(h_B, b.data(), dataSize);
+    cudaMemcpy(deviceA, a.data(), dataSize, cudaMemcpyHostToDevice);
+    cudaMemcpy(deviceB, b.data(), dataSize, cudaMemcpyHostToDevice);
 
-    cudaMemcpyAsync(d_A, h_A, dataSize, cudaMemcpyHostToDevice, stream);
-    cudaMemcpyAsync(d_B, h_B, dataSize, cudaMemcpyHostToDevice, stream);
+    cublasSgemm(cublasHandle, CUBLAS_OP_N, CUBLAS_OP_N, n, n, n, &alpha, deviceB, n, deviceA, n, &beta, deviceC, n);
+   
+    cudaDeviceSynchronize();
 
-    const float alpha = 1.0f;
-    const float beta  = 0.0f;
+    cudaMemcpy(c.data(), deviceC, dataSize, cudaMemcpyDeviceToHost);
 
-    cublasGemmEx(handle,
-                 CUBLAS_OP_N, CUBLAS_OP_N,
-                 n, n, n,
-                 &alpha,
-                 d_B, CUDA_R_32F, n,
-                 d_A, CUDA_R_32F, n,
-                 &beta,
-                 d_C, CUDA_R_32F, n,
-                 CUBLAS_COMPUTE_32F_FAST_TF32,
-                 CUBLAS_GEMM_DEFAULT_TENSOR_OP);
-
-    cudaMemcpyAsync(h_C, d_C, dataSize, cudaMemcpyDeviceToHost, stream);
-    cudaStreamSynchronize(stream);
-
-    std::vector<float> c(static_cast<size_t>(n * n));
-    std::memcpy(c.data(), h_C, dataSize);
-
-    cudaFree(d_A);
-    cudaFree(d_B);
-    cudaFree(d_C);
-  
-    cudaFreeHost(h_A);
-    cudaFreeHost(h_B);
-    cudaFreeHost(h_C);
-  
-    cudaStreamDestroy(stream);
-    cublasDestroy(handle);
+    cudaFree(deviceA);
+    cudaFree(deviceB);
+    cudaFree(deviceC);
+    cublasDestroy(cublasHandle); 
 
     return c;
 }
