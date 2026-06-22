@@ -501,7 +501,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|chervyakov_ivan|0.0449|8|
 |**REF**|**REF**|**0.0467**|**-**|
 |default|pinegina_natalia|0.0469|5|
-|default|zvorykin_aleksandr|BUILD FAILED|-|
+|default|zvorykin_aleksandr|0.0898|12|
 
 ## 6_softmax_cuda (8192x16384 elements)
 |Group|Name|Result|Rank|
@@ -560,7 +560,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|zinoviev_vladimir|**7/7**|**415**|
 |default|zlobin_george|5/7|205|
 |default|znamenskiy_mikhail|**7/7**|**363**|
-|default|zvorykin_aleksandr|2/7|108|
+|default|zvorykin_aleksandr|3/7|150|
 
 Passed: 7
 
