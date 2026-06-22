@@ -25,7 +25,7 @@ std::vector<float> GeluCUDA(const std::vector<float>& input) {
     cudaMemcpy(devicePtr, inPtrHost, bSize, cudaMemcpyHostToDevice);
 
     constexpr int nThreads = 256;
-    int nBlocks = cuda::ceil_div(size, nThreads);
+    int nBlocks = (size + nThreads - 1) / nThreads;
     GeluKernel<<<nBlocks, nThreads>>>(devicePtr, size);
 
     std::vector<float> output(size);

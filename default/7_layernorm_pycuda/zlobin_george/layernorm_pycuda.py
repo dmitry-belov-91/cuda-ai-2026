@@ -96,7 +96,7 @@ def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
     beta_on_cpu = np.asarray(beta, dtype=np.float32).ravel()
     output_on_cpu = np.empty_like(input_on_cpu)
 
-    nelem = a.size
+    nelem = input_on_cpu.size
     nelem_bytes = nelem * 4
     row_size_bytes = row_size * 4
     
@@ -113,7 +113,7 @@ def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
         input_on_gpu, gamma_on_gpu, beta_on_gpu, output_on_gpu,
         np.int32(row_size), np.float32(eps),
         block=(_BLOCK_SIZE, 1, 1),
-        grid=(a.size // row_size, 1),
+        grid=(input_on_cpu.size // row_size, 1),
     )
 
     cuda.memcpy_dtoh(output_on_cpu, output_on_gpu)
