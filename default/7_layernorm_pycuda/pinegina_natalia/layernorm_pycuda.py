@@ -3,53 +3,74 @@ import pycuda.driver as drv
 import numpy as np
 from pycuda.compiler import SourceModule
 
+#import time
+
 cLayerNormKernel = """
 
-extern "C" __global__ void layerNormKernel(const float* x, float* y, const float* gamma, const float* beta,
-                                            int row_size, float eps)
+__global__ void rowMeans(float* means, const float* input, int col_size, int row_size)
 {
-    int row = blockIdx.x;
-    int tid = threadIdx.x;
-
-    int row_offset = row * row_size;
+    const int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i >= col_size) return;
 
     float sum = 0.0f;
-    for (int i = tid; i < row_size; i += blockDim.x) {
-        sum += x[row_offset + i];
+
+    for (int j = 0; j < row_size; ++j) {
+        sum += input[i * row_size + j];
+    }
+    means[i] = sum / row_size;
+}
+
+__global__ void subDif(float* input, int col_size, int row_size, float* mean) {
+    const int i = blockIdx.y * blockDim.y + threadIdx.y;
+    const int j = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i >= col_size || j >= row_size) return;
+
+    input[i * row_size + j] -= mean[i];
+}
+
+__global__ void getSigma(float* mean, const float* input, int col_size, int row_size)
+{
+    const int j = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (j >= col_size) return;
+
+    float varSum = 0.0f;
+    float diff = 0.0f;
+
+    for (int k = 0; k < row_size; ++k) {
+        diff = input[j * row_size + k];
+        varSum += diff * diff;
     }
 
-    __shared__ float s_mean;
-    if (tid == 0) s_mean = 0.0f;
-    __syncthreads();
-    atomicAdd(&s_mean, sum);
-    __syncthreads();
+    mean[j] = varSum / row_size;
+}
 
-    float mean = s_mean / row_size;
+__global__ void getSqrt(float* input, int row_size, float eps)
+{
+    const int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i >= row_size) return;
 
-    float var_sum = 0.0f;
-    for (int i = tid; i < row_size; i += blockDim.x) {
-        float diff = x[row_offset + i] - mean;
-        var_sum += diff * diff;
-    }
+    input[i] = 1.0f / sqrt(input[i] + eps);
+}
 
-    __shared__ float s_var;
-    if (tid == 0) s_var = 0.0f;
-    __syncthreads();
-    atomicAdd(&s_var, var_sum);
-    __syncthreads();
+__global__ void layerNormKernel(float* input, const float* sigma, const float* gamma, const float* beta,
+                                            int col_size, int row_size, float eps)
+{
+    const int i = blockIdx.y * blockDim.y + threadIdx.y;
+    const int j = blockIdx.x * blockDim.x + threadIdx.x;
 
-    float variance = s_var / row_size;
-    float rsqrt_var = rsqrtf(variance + eps);
+    if (i >= col_size || j >= row_size) return;
 
-    for (int i = tid; i < row_size; i += blockDim.x) {
-        int idx = row_offset + i;
-        float normalized = (x[idx] - mean) * rsqrt_var;
-        y[idx] = normalized * gamma[i] + beta[i];
-    }
+    float x_upd = sigma[i] * gamma[j];
+    input[i * row_size + j] = input[i * row_size + j] * x_upd + beta[j];
 }
 """
 
 module = SourceModule(cLayerNormKernel)
+pyRowMeans = module.get_function("rowMeans")
+pySubDif = module.get_function("subDif")
+pyGetSigma = module.get_function("getSigma")
+pyGetSqrt = module.get_function("getSqrt")
 pyLayerNorm = module.get_function("layerNormKernel")
 
 def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
@@ -58,12 +79,11 @@ def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
     gamma = np.asarray(gamma, dtype=np.float32)
     beta = np.asarray(beta, dtype=np.float32)
 
-    batch_size = np.int32(x.size / row_size)
-    #batch_size = x.shape
-    #print(batch_size)
+    col_size = np.int32(x.size / row_size)
+    row_size = np.int32(row_size)
 
     x_gpu = drv.mem_alloc(x.nbytes)
-    y_gpu = drv.mem_alloc(x.nbytes)
+    mean_gpu = drv.mem_alloc(int(col_size * 4))
     gamma_gpu = drv.mem_alloc(gamma.nbytes)
     beta_gpu = drv.mem_alloc(beta.nbytes)
 
@@ -71,21 +91,28 @@ def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
     drv.memcpy_htod(gamma_gpu, gamma)
     drv.memcpy_htod(beta_gpu, beta)
 
-    block_size = np.int32(min(row_size, 512))
-    grid_size = (int(batch_size),int(batch_size), 1)
-    block_size = (int(block_size), 1, 1)
+    bs_vec = (256, 1, 1)
+    nb_vec = (int((col_size + 255) // 256), 1)
 
-    pyLayerNorm(x_gpu, y_gpu, gamma_gpu, beta_gpu, np.int32(row_size), np.float32(eps),
-        block=block_size, grid=grid_size)
+    bs_mtrx = (16, 16, 1)
+    nb_mtrx = (int((row_size + 15) // 16), int((col_size + 15) // 16),1)
+
+    pyRowMeans(mean_gpu, x_gpu, col_size, row_size, block=bs_vec, grid=nb_vec)
+    pySubDif(x_gpu, col_size, row_size, mean_gpu, block=bs_mtrx, grid=nb_mtrx)
+    pyGetSigma(mean_gpu, x_gpu, col_size, row_size, block=bs_vec, grid=nb_vec)
+    pyGetSqrt(mean_gpu, col_size, np.float32(eps), block=bs_vec, grid=nb_vec)
+    pyLayerNorm(x_gpu, mean_gpu, gamma_gpu, beta_gpu, col_size, row_size, np.float32(eps),block=bs_mtrx, grid=nb_mtrx)
 
     y = np.empty_like(x)
-    drv.memcpy_dtoh(y, y_gpu)
+    drv.memcpy_dtoh(y, x_gpu)
 
     return y
 
 # --- Test ---
-#batch_size = 8
-#row_size = 8
+#start_time = time.perf_counter()
+
+#batch_size = 8192
+#row_size =8192
 
 #x_test = np.full((batch_size, row_size),300)
 #x_test = [[i + j * row_size for i in range(row_size)] for j in range(row_size)]
@@ -95,5 +122,10 @@ def layernorm_pycuda(input, gamma, beta, row_size, eps=1e-5):
 #y_out = layernorm_pycuda(x_test, gamma_test, beta_test, row_size)
 
 #print(y_out)
+
+#end_time = time.perf_counter()
+#execution_time = end_time - start_time
+#print(f"Время выполнения: {execution_time:.6f} секунд")
+
 #print(y_out)
 #print(y_out)
