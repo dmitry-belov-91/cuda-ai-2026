@@ -516,10 +516,10 @@ One may use numba or C strings to write CUDA kernels.
 |default|zinoviev_vladimir|0.1030|2|
 |default|zemskov_roman|0.1780|5|
 |default|pigasin_dmitry|0.1850|3|
+|default|pinegina_natalia|0.1930|6|
 |**REF**|**REF**|**0.1930**|**-**|
 |default|smirnov_denis|0.2060|1|
 |default|lobanova_elizaveta|0.2060|4|
-|default|pinegina_natalia|TOO SLOW|-|
 
 # Tasks Done
 ## default
@@ -532,24 +532,24 @@ One may use numba or C strings to write CUDA kernels.
 |default|kireev_daniil|0/7|0|
 |default|korobeynikov_aleksey|3/7|116|
 |default|kryukov_dmitry|0/7|0|
-|default|lobanova_elizaveta|**7/7**|**405**|
+|default|lobanova_elizaveta|**7/7**|**404**|
 |default|lukicheva_polina|2/7|85|
 |default|malinin_nikita|2/7|79|
 |default|novozhilov_mikhail|2/7|82|
 |default|pigasin_dmitry|**7/7**|**347**|
-|default|pinegina_natalia|6/7|286|
+|default|pinegina_natalia|**7/7**|**342**|
 |default|pisarevsky_vadim|6/7|342|
 |default|rodygin_vadim|3/7|130|
-|default|smirnov_denis|**7/7**|**404**|
+|default|smirnov_denis|**7/7**|**403**|
 |default|vikhrev_ivan|4/7|196|
 |default|zemskov_roman|6/7|324|
 |default|zinoviev_vladimir|**7/7**|**416**|
 |default|znamenskiy_mikhail|6/7|316|
 |default|zvorykin_aleksandr|2/7|109|
 
-Passed: 4
+Passed: 5
 
-**Total Passed: 4**
+**Total Passed: 5**
 
 ---
 *Maximum Score: 448 (64 per task)*
