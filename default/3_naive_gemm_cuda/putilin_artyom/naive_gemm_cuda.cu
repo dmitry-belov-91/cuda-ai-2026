@@ -35,20 +35,21 @@ std::vector<float> NaiveGemmCUDA(const std::vector<float>& a, const std::vector<
 
     cudaMalloc(&data_ptr, 3 * mtxSize);
     cudaMemcpy(data_ptr, a.data(), mtxSize, cudaMemcpyHostToDevice);
-    cudaMemcpy(data_ptr + mtxSize, b.data(), mtxSize, cudaMemcpyHostToDevice);
-    cudaMemset(data_ptr + 2 * mtxSize, 0, mtxSize);
+    cudaMemcpy(data_ptr + N, b.data(), mtxSize, cudaMemcpyHostToDevice);
+    cudaMemset(data_ptr + 2 * N, 0, mtxSize);
 
     dim3 threadsPerBlock(THREADS_PER_BLOCK, THREADS_PER_BLOCK);
 
-    dim3 blocksPerGrid((N + threadsPerBlock.x - 1) / threadsPerBlock.x,
-                       (N + threadsPerBlock.y - 1) / threadsPerBlock.y);
+    dim3 blocksPerGrid((n + threadsPerBlock.x - 1) / threadsPerBlock.x,
+                       (n + threadsPerBlock.y - 1) / threadsPerBlock.y);
 
-    naive_matrix_mul_kernel<<<blocksPerGrid, threadsPerBlock>>>(data_ptr, data_ptr + mtxSize, data_ptr + 2*mtxSize, n);
+    naive_matrix_mul_kernel<<<blocksPerGrid, threadsPerBlock>>>(data_ptr, data_ptr + N, data_ptr + 2*N, n);
 
     cudaDeviceSynchronize();
 
-    cudaMemcpy(c.data(), data_ptr + 2*mtxSize, mtxSize, cudaMemcpyDeviceToHost);
+    cudaMemcpy(c.data(), data_ptr + 2*N, mtxSize, cudaMemcpyDeviceToHost);
     cudaFree(data_ptr);
 
     return c;
+
 }

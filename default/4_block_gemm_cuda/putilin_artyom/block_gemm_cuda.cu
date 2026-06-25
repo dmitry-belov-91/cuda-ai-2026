@@ -1,8 +1,12 @@
-#include "naive_gemm_cuda.h"
+#include "block_gemm_cuda.h"
 
 #include <device_launch_parameters.h>
 #include <cuda_runtime.h>
 #include <cuda/cmath>
+#include <cmath>
+#include <cstdlib>
+#include <chrono>
+
 
 #define TILE_DIM 16
 
