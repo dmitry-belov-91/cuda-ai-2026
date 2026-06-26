@@ -541,6 +541,7 @@ One may use numba or C strings to write CUDA kernels.
 |Group|Name|Result|Rank|
 |-----|----|------|----|
 |default|lobanova_elizaveta|0.1226|6|
+|default|kozlov_mikhail|0.1248|15|
 |**FAST**|**FAST**|**0.1318**|**-**|
 |default|pigasin_dmitry|0.1322|7|
 |default|chervyakov_ivan|0.1363|11|
@@ -582,33 +583,33 @@ One may use numba or C strings to write CUDA kernels.
 |-----|----|------|-----|
 |default|belov_dmitry|1/7|40|
 |default|bolshakova_viktoriya|5/7|136|
-|default|chekmaryov_petr|**7/7**|**327**|
-|default|chervyakov_ivan|**7/7**|**315**|
-|default|ermilov_dmitry|**7/7**|**315**|
+|default|chekmaryov_petr|**7/7**|**326**|
+|default|chervyakov_ivan|**7/7**|**314**|
+|default|ermilov_dmitry|**7/7**|**314**|
 |default|kireev_daniil|0/7|0|
 |default|korobeynikov_aleksey|4/7|140|
-|default|kozlov_mikhail|5/7|193|
+|default|kozlov_mikhail|6/7|242|
 |default|kryukov_dmitry|2/7|62|
 |default|lobanova_elizaveta|**7/7**|**396**|
 |default|lukicheva_polina|4/7|129|
-|default|malinin_nikita|6/7|240|
+|default|malinin_nikita|6/7|239|
 |default|novozhilov_mikhail|4/7|134|
-|default|pigasin_dmitry|**7/7**|**327**|
-|default|pinegina_natalia|**7/7**|**305**|
-|default|pisarevsky_vadim|6/7|334|
+|default|pigasin_dmitry|**7/7**|**326**|
+|default|pinegina_natalia|**7/7**|**304**|
+|default|pisarevsky_vadim|6/7|333|
 |default|pushchin_alexey|0/7|0|
 |default|putilin_artyom|3/7|82|
 |default|rodygin_vadim|3/7|115|
 |default|salnikov_nikolay|4/7|133|
-|default|smirnov_denis|**7/7**|**382**|
+|default|smirnov_denis|**7/7**|**381**|
 |default|suchkov_vladislav|3/7|69|
 |default|vikhrev_ivan|5/7|230|
 |default|volkovskiy_pavel|2/7|59|
-|default|zemskov_roman|**7/7**|**356**|
-|default|zinoviev_vladimir|**7/7**|**409**|
-|default|zlobin_george|**7/7**|**278**|
-|default|znamenskiy_mikhail|**7/7**|**343**|
-|default|zvorykin_aleksandr|5/7|229|
+|default|zemskov_roman|**7/7**|**355**|
+|default|zinoviev_vladimir|**7/7**|**408**|
+|default|zlobin_george|**7/7**|**277**|
+|default|znamenskiy_mikhail|**7/7**|**342**|
+|default|zvorykin_aleksandr|5/7|228|
 
 Passed: 11
 
