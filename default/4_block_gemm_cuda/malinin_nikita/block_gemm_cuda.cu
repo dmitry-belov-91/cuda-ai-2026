@@ -8,28 +8,24 @@ __global__ void BlockGemmCUDAImpl(const float *a, const float *b, float *c, int 
     __shared__ int blockA[BLOCK_SIZE_DOUBLE];
     __shared__ int blockB[BLOCK_SIZE_DOUBLE];
 
-    int t_x = threadIdx.x;
-    int t_y = threadIdx.y;
-    int blockSize = blockDim.x;
-
-    int x = blockIdx.x * blockSize + t_x;
-    int y = blockIdx.y * blockSize + t_y;
-    int blockAB = t_y * blockSize + t_x;
+    int localRow = threadIdx.y;
+    int localCol = threadIdx.x;
+    int globalRow = localRow + blockIdx.y * blockDim.y;
+    int globalCol = localCol + blockIdx.x * blockDim.x;
 
     float sum = 0.0f;
 
     for (int block = 0; block < gridDim.x; ++block) {
-        blockA[blockAB] = a[y * n + block * blockSize + t_x];
-        blockB[blockAB] = b[(block * blockSize + t_y) * n + x];
+        blockA[localRow * BLOCK_SIZE + localCol] = a[globalRow * n + block * BLOCK_SIZE + localCol];
+        blockB[localRow * BLOCK_SIZE + localCol] = b[(block * BLOCK_SIZE + localRow) * n + globalCol];
+        __syncthreads();
+
+        for (int k = 0; k < BLOCK_SIZE; ++k) {
+            sum += blockA[localRow * BLOCK_SIZE + k] * blockB[k * BLOCK_SIZE + localCol];
+        }
         __syncthreads();
     }
-
-
-    for (int k = 0; k < blockSize; ++k) {
-        sum += blockA[t_y * blockSize + k] * blockB[k * blockSize + t_x];
-    }
-
-    __syncthreads();
+    c[globalRow * n + globalCol] = sum;
 }
 
 std::vector<float> BlockGemmCUDA(const std::vector<float>& a,
