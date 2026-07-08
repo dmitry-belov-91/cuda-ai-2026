@@ -623,6 +623,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|volkovskiy_pavel|0.2060|19|
 |default|bolshakova_viktoriya|0.2060|24|
 |default|chekmaryov_petr|0.2070|11|
+|default|pashchenkov_maxim|0.2120|25|
 |default|pisarevsky_vadim|0.2140|23|
 |default|znamenskiy_mikhail|0.2180|7|
 |default|kryukov_dmitry|0.2300|17|
@@ -644,32 +645,32 @@ One may use numba or C strings to write CUDA kernels.
 |default|kireev_daniil|0/7|0|
 |default|korobeynikov_aleksey|**7/7**|**202**|
 |default|kozlov_mikhail|**7/7**|**279**|
-|default|kryukov_dmitry|**7/7**|**221**|
+|default|kryukov_dmitry|**7/7**|**220**|
 |default|lobanova_elizaveta|**7/7**|**381**|
 |default|lukicheva_polina|5/7|130|
 |default|malinin_nikita|**7/7**|**266**|
-|default|novozhilov_mikhail|**7/7**|**182**|
-|default|pashchenkov_maxim|6/7|144|
+|default|novozhilov_mikhail|**7/7**|**181**|
+|default|pashchenkov_maxim|**7/7**|**166**|
 |default|pigasin_dmitry|**7/7**|**304**|
 |default|pinegina_natalia|**7/7**|**261**|
-|default|pisarevsky_vadim|**7/7**|**343**|
+|default|pisarevsky_vadim|**7/7**|**342**|
 |default|pushchin_alexey|2/7|54|
 |default|putilin_artyom|6/7|141|
-|default|rodygin_vadim|6/7|160|
+|default|rodygin_vadim|6/7|159|
 |default|salnikov_nikolay|**7/7**|**234**|
 |default|smirnov_denis|**7/7**|**349**|
 |default|suchkov_vladislav|5/7|114|
-|default|vikhrev_ivan|**7/7**|**275**|
+|default|vikhrev_ivan|**7/7**|**274**|
 |default|volkovskiy_pavel|**7/7**|**202**|
 |default|zemskov_roman|**7/7**|**337**|
 |default|zinoviev_vladimir|**7/7**|**399**|
 |default|zlobin_george|**7/7**|**245**|
-|default|znamenskiy_mikhail|**7/7**|**305**|
+|default|znamenskiy_mikhail|**7/7**|**304**|
 |default|zvorykin_aleksandr|**7/7**|**296**|
 
-Passed: 23
+Passed: 24
 
-**Total Passed: 23**
+**Total Passed: 24**
 
 ---
 *Maximum Score: 448 (64 per task)*
