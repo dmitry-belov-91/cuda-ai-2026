@@ -622,6 +622,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|pinegina_natalia|0.1930|6|
 |**REF**|**REF**|**0.1930**|**-**|
 |default|korobeynikov_aleksey|0.1950|21|
+|default|lukicheva_polina|0.2030|27|
 |default|smirnov_denis|0.2060|1|
 |default|lobanova_elizaveta|0.2060|4|
 |default|volkovskiy_pavel|0.2060|19|
@@ -642,39 +643,39 @@ One may use numba or C strings to write CUDA kernels.
 |-----|----|------|-----|
 |default|babayan_konstantin|**7/7**|**233**|
 |default|belov_dmitry|5/7|112|
-|default|bolshakova_viktoriya|**7/7**|**171**|
-|default|chekmaryov_petr|**7/7**|**289**|
+|default|bolshakova_viktoriya|**7/7**|**170**|
+|default|chekmaryov_petr|**7/7**|**288**|
 |default|chervyakov_ivan|**7/7**|**278**|
 |default|ermilov_dmitry|**7/7**|**298**|
 |default|kireev_daniil|0/7|0|
 |default|korobeynikov_aleksey|**7/7**|**197**|
 |default|kozlov_mikhail|**7/7**|**277**|
-|default|kryukov_dmitry|**7/7**|**217**|
-|default|lobanova_elizaveta|**7/7**|**379**|
-|default|lukicheva_polina|6/7|155|
+|default|kryukov_dmitry|**7/7**|**216**|
+|default|lobanova_elizaveta|**7/7**|**378**|
+|default|lukicheva_polina|**7/7**|**179**|
 |default|malinin_nikita|**7/7**|**266**|
-|default|novozhilov_mikhail|**7/7**|**178**|
-|default|pashchenkov_maxim|**7/7**|**164**|
+|default|novozhilov_mikhail|**7/7**|**177**|
+|default|pashchenkov_maxim|**7/7**|**163**|
 |default|pigasin_dmitry|**7/7**|**304**|
 |default|pinegina_natalia|**7/7**|**257**|
-|default|pisarevsky_vadim|**7/7**|**339**|
+|default|pisarevsky_vadim|**7/7**|**338**|
 |default|pushchin_alexey|3/7|65|
 |default|putilin_artyom|6/7|139|
-|default|rodygin_vadim|**7/7**|**178**|
+|default|rodygin_vadim|**7/7**|**177**|
 |default|salnikov_nikolay|**7/7**|**231**|
-|default|smirnov_denis|**7/7**|**345**|
+|default|smirnov_denis|**7/7**|**344**|
 |default|suchkov_vladislav|**7/7**|**158**|
-|default|vikhrev_ivan|**7/7**|**271**|
-|default|volkovskiy_pavel|**7/7**|**200**|
+|default|vikhrev_ivan|**7/7**|**270**|
+|default|volkovskiy_pavel|**7/7**|**199**|
 |default|zemskov_roman|**7/7**|**336**|
 |default|zinoviev_vladimir|**7/7**|**417**|
 |default|zlobin_george|**7/7**|**242**|
-|default|znamenskiy_mikhail|**7/7**|**300**|
+|default|znamenskiy_mikhail|**7/7**|**299**|
 |default|zvorykin_aleksandr|**7/7**|**292**|
 
-Passed: 26
+Passed: 27
 
-**Total Passed: 26**
+**Total Passed: 27**
 
 ---
 *Maximum Score: 448 (64 per task)*
