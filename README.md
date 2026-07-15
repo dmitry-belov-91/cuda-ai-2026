@@ -417,7 +417,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|pinegina_natalia|0.2212|11|
 |default|suchkov_vladislav|0.2275|22|
 |default|lukicheva_polina|0.2277|10|
-|default|pushchin_alexey|0.2515|30|
+|default|pushchin_alexey|0.2420|30|
 |default|korobeynikov_aleksey|0.3856|13|
 |default|rodygin_vadim|0.3896|27|
 |**REF**|**REF**|**0.4536**|**-**|
@@ -458,7 +458,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|putilin_artyom|0.2385|21|
 |default|rodygin_vadim|0.3343|14|
 |default|kireev_daniil|TEST FAILED|-|
-|default|pushchin_alexey|TEST FAILED|-|
+|default|pushchin_alexey|BUILD FAILED|-|
 
 ## 3_naive_gemm_cuda (4096 elements)
 |Group|Name|Result|Rank|
@@ -491,10 +491,10 @@ One may use numba or C strings to write CUDA kernels.
 |default|chervyakov_ivan|0.1678|12|
 |default|ermilov_dmitry|0.1845|13|
 |default|pigasin_dmitry|0.1866|11|
+|default|pushchin_alexey|0.2041|30|
 |default|lukicheva_polina|0.2727|19|
 |default|suchkov_vladislav|0.5691|18|
 |**REF**|**REF**|**0.5748**|**-**|
-|default|pushchin_alexey|TEST FAILED|-|
 
 ## 4_block_gemm_cuda (4096 elements)
 |Group|Name|Result|Rank|
@@ -601,8 +601,8 @@ One may use numba or C strings to write CUDA kernels.
 |default|chekmaryov_petr|0.1817|13|
 |default|korobeynikov_aleksey|0.1896|19|
 |default|pinegina_natalia|0.1931|4|
+|default|pushchin_alexey|0.2253|29|
 |default|belov_dmitry|TEST FAILED|-|
-|default|pushchin_alexey|TEST FAILED|-|
 
 ## 7_layernorm_pycuda (8192x16384 elements)
 |Group|Name|Result|Rank|
@@ -636,6 +636,7 @@ One may use numba or C strings to write CUDA kernels.
 |default|novozhilov_mikhail|0.2630|20|
 |default|rodygin_vadim|0.2640|18|
 |default|vikhrev_ivan|0.2670|16|
+|default|pushchin_alexey|RUN FAILED|-|
 
 # Tasks Done
 ## default
@@ -652,19 +653,19 @@ One may use numba or C strings to write CUDA kernels.
 |default|kozlov_mikhail|**7/7**|**276**|
 |default|kryukov_dmitry|**7/7**|**215**|
 |default|lobanova_elizaveta|**7/7**|**377**|
-|default|lukicheva_polina|**7/7**|**178**|
+|default|lukicheva_polina|**7/7**|**177**|
 |default|malinin_nikita|**7/7**|**266**|
 |default|novozhilov_mikhail|**7/7**|**176**|
 |default|pashchenkov_maxim|**7/7**|**162**|
 |default|pigasin_dmitry|**7/7**|**303**|
 |default|pinegina_natalia|**7/7**|**256**|
 |default|pisarevsky_vadim|**7/7**|**337**|
-|default|pushchin_alexey|3/7|65|
+|default|pushchin_alexey|5/7|81|
 |default|putilin_artyom|6/7|139|
 |default|rodygin_vadim|**7/7**|**176**|
 |default|salnikov_nikolay|**7/7**|**231**|
 |default|smirnov_denis|**7/7**|**343**|
-|default|suchkov_vladislav|**7/7**|**157**|
+|default|suchkov_vladislav|**7/7**|**156**|
 |default|vikhrev_ivan|**7/7**|**269**|
 |default|volkovskiy_pavel|**7/7**|**198**|
 |default|zemskov_roman|**7/7**|**335**|
